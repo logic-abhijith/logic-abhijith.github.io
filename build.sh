@@ -10,8 +10,7 @@ desc=$(sed -n 's/.*<meta name="description" content="\([^"]*\)".*/\1/p' portfoli
   printf '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
   printf '<style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%%}[hidden]{display:none!important}</style>\n'
   printf '<link rel="icon" href="favicon.svg" type="image/svg+xml">\n'
-  printf '<meta name="theme-color" content="#f2f3ee" media="(prefers-color-scheme: light)">\n'
-  printf '<meta name="theme-color" content="#0c120f" media="(prefers-color-scheme: dark)">\n'
+  printf '<meta name="theme-color" content="#0c120f">\n'
   printf '<link rel="canonical" href="%s">\n' "$site"
   printf '<meta property="og:type" content="website">\n<meta property="og:url" content="%s">\n' "$site"
   printf '<meta property="og:title" content="Abhijith S">\n<meta property="og:description" content="%s">\n' "$desc"

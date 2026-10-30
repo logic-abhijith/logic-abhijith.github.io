@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#f2f3ee" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0c120f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0c120f">
 <link rel="canonical" href="https://logic-abhijith.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://logic-abhijith.github.io/">
@@ -23,43 +22,28 @@
    (soldermask, copper, silkscreen); below it, ruled datasheet sections with the
    section label held in a left margin column. */
 :root{
-  --paper:#f2f3ee;
-  --paper-2:#e7eae2;
-  --ink:#131c17;
-  --muted:#55625a;
-  --rule:#c8cec5;
-  --accent:#7d5e14;
-  --lead:#b8954a;
-  --mask:#0f4a34;
-  --mask-hi:#1b6447;
-  --trace:#25784f;
-  --silk:#f1efe4;
+  color-scheme:dark;
+  --paper:#0c120f;
+  --paper-2:#131b17;
+  --ink:#e2e7df;
+  --muted:#95a299;
+  --rule:#26312b;
+  --accent:#d8b45e;
+  --lead:#9a7f42;
+  --mask:#0d4430;
+  --mask-hi:#175a40;
+  --trace:#22704b;
+  --silk:#efede2;
   --gold:#d8b25a;
   --gold-ink:#1d1606;
-  --pkg:#1a1d1b;
+  --pkg:#1e2220;
   --pkg-ink:#9aa39c;
-  --shell:#1a1d1b;
-  --shadow:rgba(8,36,24,.42);
+  --shell:#363d38;
+  --shadow:rgba(0,0,0,.55);
   --display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --body:"Archivo","Helvetica Neue",Arial,sans-serif;
   --mono:"Martian Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --top-h:56px;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --paper:#0c120f; --paper-2:#131b17; --ink:#e2e7df; --muted:#95a299; --rule:#26312b;
-    --accent:#d8b45e; --lead:#9a7f42;
-    --mask:#0d4430; --mask-hi:#175a40; --trace:#22704b; --silk:#efede2; --gold:#d8b25a; --gold-ink:#1d1606;
-    --pkg:#1e2220; --pkg-ink:#9aa39c; --shell:#363d38; --shadow:rgba(0,0,0,.55);
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#0c120f; --paper-2:#131b17; --ink:#e2e7df; --muted:#95a299; --rule:#26312b;
-  --accent:#d8b45e; --lead:#9a7f42;
-  --mask:#0d4430; --mask-hi:#175a40; --trace:#22704b; --silk:#efede2; --gold:#d8b25a; --gold-ink:#1d1606;
-  --pkg:#1e2220; --pkg-ink:#9aa39c; --shell:#363d38; --shadow:rgba(0,0,0,.55);
-  color-scheme:dark;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -249,7 +233,7 @@ a.node{color:inherit;text-decoration:none;transition:border-color .15s,box-shado
 a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
 
 /* AURA's three devices: sub-projects hung off a bus line under the parent.
-   Device screens stay dark in both themes, like the real hardware. */
+   Device screens are drawn near-black, like the real hardware. */
 .subs{--scr:#08110d;--glow:#f3d27a;container-type:inline-size;position:relative;margin-top:36px;padding-left:30px;border-left:1.5px solid var(--ink)}
 .subs::before{content:"";position:absolute;left:-5px;top:-5px;width:8px;height:8px;border-radius:50%;background:var(--ink)}
 .subs-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 20px}
@@ -1154,8 +1138,6 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
     if (Math.abs(r.width - lw) < 2 && Math.abs(r.height - lh) < 2) return;
     clearTimeout(rt); rt = setTimeout(rebuild, 120);
   }).observe(board);
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rebuild);
-  new MutationObserver(rebuild).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   rebuild();
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { rebuild(); burst(); });
