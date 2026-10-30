@@ -38,6 +38,7 @@
   --gold-ink:#1d1606;
   --pkg:#1a1d1b;
   --pkg-ink:#9aa39c;
+  --shell:#1a1d1b;
   --shadow:rgba(8,36,24,.42);
   --display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --body:"Archivo","Helvetica Neue",Arial,sans-serif;
@@ -49,7 +50,7 @@
     --paper:#0c120f; --paper-2:#131b17; --ink:#e2e7df; --muted:#95a299; --rule:#26312b;
     --accent:#d8b45e; --lead:#9a7f42;
     --mask:#0d4430; --mask-hi:#175a40; --trace:#22704b; --silk:#efede2; --gold:#d8b25a; --gold-ink:#1d1606;
-    --pkg:#1e2220; --pkg-ink:#9aa39c; --shadow:rgba(0,0,0,.55);
+    --pkg:#1e2220; --pkg-ink:#9aa39c; --shell:#363d38; --shadow:rgba(0,0,0,.55);
     color-scheme:dark;
   }
 }
@@ -57,7 +58,7 @@
   --paper:#0c120f; --paper-2:#131b17; --ink:#e2e7df; --muted:#95a299; --rule:#26312b;
   --accent:#d8b45e; --lead:#9a7f42;
   --mask:#0d4430; --mask-hi:#175a40; --trace:#22704b; --silk:#efede2; --gold:#d8b25a; --gold-ink:#1d1606;
-  --pkg:#1e2220; --pkg-ink:#9aa39c; --shadow:rgba(0,0,0,.55);
+  --pkg:#1e2220; --pkg-ink:#9aa39c; --shell:#363d38; --shadow:rgba(0,0,0,.55);
   color-scheme:dark;
 }
 
@@ -222,7 +223,7 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
 .minor .points{margin-top:16px}
 .minor .points li{font-size:15px}
 #work.is-filtering .proj:not(.is-lit){opacity:.28;filter:saturate(.3)}
-#work .proj.is-lit h3{color:var(--accent)}
+#work .proj.is-lit > .proj-head h3{color:var(--accent)}
 @media (max-width:900px){.specs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.minor{grid-template-columns:minmax(0,1fr)}.minor .proj:nth-child(n+2){border-top:1px solid var(--rule)}}
 
@@ -244,6 +245,86 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
 .bus-r::after,.bus-l::before{content:"";position:absolute;top:26px;bottom:26px;width:1.5px;background:var(--ink)}
 .bus-r::after{right:0}
 .bus-l::before{left:0}
+a.node{color:inherit;text-decoration:none;transition:border-color .15s,box-shadow .15s}
+a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
+
+/* AURA's three devices: sub-projects hung off a bus line under the parent.
+   Device screens stay dark in both themes, like the real hardware. */
+.subs{--scr:#08110d;--glow:#f3d27a;container-type:inline-size;position:relative;margin-top:36px;padding-left:30px;border-left:1.5px solid var(--ink)}
+.subs::before{content:"";position:absolute;left:-5px;top:-5px;width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.subs-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 20px}
+.subs-k,.subs-emo{margin:0;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em}
+.subs-k{color:var(--accent)}
+.subs-emo{color:var(--muted)}
+.subs-emo b{color:var(--ink);font-weight:600}
+.sub{position:relative;padding:30px 0 0;border-top:0}
+.sub + .sub{margin-top:36px;border-top:1px solid var(--rule)}
+.sub::before{content:"";position:absolute;left:-30px;top:44px;width:22px;height:1.5px;background:var(--ink)}
+.sub::after{content:"";position:absolute;left:-11px;top:41px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.sub h3{display:flex;align-items:baseline;gap:12px;font-size:clamp(25px,3.2vw,34px);font-stretch:118%}
+.sub-pn{font-family:var(--mono);font-size:11px;font-weight:500;font-stretch:100%;letter-spacing:.08em;color:var(--accent)}
+.sub .proj-lede{margin-top:12px;font-size:17.5px}
+.sub .points{margin-top:16px}
+.sub .points li{font-size:15px}
+.sub-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@container (min-width:660px){.sub-grid{grid-template-columns:minmax(0,1fr) 270px;gap:36px;align-items:start}}
+@media (max-width:560px){.subs{padding-left:18px}.sub::before{left:-18px;width:12px}.sub::after{left:-9px}}
+
+.dev{margin:0;display:grid;justify-items:center;gap:16px;padding:28px 16px 14px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2)}
+.dev figcaption{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center}
+.dev-art{position:relative}
+
+/* emotion eyes: lid (::before) and cheek (::after) slide in over the glow */
+.face{display:flex;justify-content:center;align-items:center;gap:var(--eg,12px);animation:blink 5s infinite}
+.eye{position:relative;overflow:hidden;width:var(--ew,16px);height:calc(var(--ew,16px)*1.35);border-radius:calc(var(--ew,16px)*.34);background:var(--glow);box-shadow:0 0 calc(var(--ew,16px)*.6) color-mix(in srgb,var(--glow) 45%,transparent);transition:width .4s,height .4s,border-radius .4s}
+.eye::before,.eye::after{content:"";position:absolute;background:var(--scr);transition:transform .4s}
+.eye::before{left:-40%;right:-40%;top:0;height:70%;transform:translateY(-102%)}
+.eye::after{left:14%;right:14%;bottom:0;height:80%;border-radius:50% 50% 0 0/70% 70% 0 0;transform:translateY(102%)}
+[data-emo="happy"] .eye::after{transform:translateY(32%)}
+[data-emo="sad"] .eye:first-child::before{transform:translateY(-30%) rotate(-18deg)}
+[data-emo="sad"] .eye:last-child::before{transform:translateY(-30%) rotate(18deg)}
+[data-emo="surprised"] .eye{width:calc(var(--ew,16px)*1.2);height:calc(var(--ew,16px)*1.3);border-radius:50%}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+
+.glasses{display:grid;grid-template-columns:1fr 16px 1fr;align-items:start;width:min(100% - 32px,236px);margin-top:6px}
+.glasses::before,.glasses::after{content:"";position:absolute;top:10px;width:14px;height:4px;background:var(--ink)}
+.glasses::before{right:100%}
+.glasses::after{left:100%}
+.lens{position:relative;aspect-ratio:1.28;border:4px solid var(--ink);border-radius:18px 18px 34px 34px;background:color-mix(in srgb,var(--ink) 4%,transparent)}
+.bridge{height:4px;margin-top:16px;border-radius:2px;background:var(--ink)}
+.lens.hud{--ew:12px;--eg:9px;display:grid;place-items:center;overflow:hidden;background:var(--scr)}
+.hud-task{position:absolute;top:7px;right:9px;font:500 7.5px/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;text-align:right;color:color-mix(in srgb,var(--glow) 80%,transparent)}
+.hud-task b{display:block;font-weight:700;color:var(--glow)}
+
+.watch{display:grid;justify-items:center}
+.strap{width:84px;height:28px;background:color-mix(in srgb,var(--ink) 18%,var(--paper-2))}
+.strap:first-child{border-radius:10px 10px 0 0}
+.strap:last-child{border-radius:0 0 10px 10px}
+.case{position:relative;width:148px;height:164px;padding:9px;border-radius:38px;background:var(--shell);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--pkg-ink) 30%,transparent)}
+.case::after{content:"";position:absolute;right:-6px;top:50px;width:6px;height:26px;border-radius:0 3px 3px 0;background:var(--shell)}
+.case .scr{--ew:20px;--eg:14px;display:grid;grid-template-rows:auto 1fr auto;height:100%;padding:16px 16px 14px;border-radius:30px;background:var(--scr)}
+.w-top{display:flex;justify-content:space-between;font:600 9px/1 var(--mono);color:var(--glow)}
+.w-steps{font:500 7.5px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:color-mix(in srgb,var(--glow) 75%,transparent)}
+.w-bar{display:block;height:3px;margin-top:5px;border-radius:2px;background:color-mix(in srgb,var(--glow) 22%,transparent)}
+.w-bar i{display:block;width:65%;height:100%;border-radius:inherit;background:var(--glow)}
+
+.robot{display:grid;justify-items:center;padding-top:28px}
+.r-head{position:relative;width:184px;height:126px;padding:12px;border-radius:26px;background:var(--shell)}
+.r-head::before,.r-head::after{content:"";position:absolute;top:44px;width:7px;height:34px;background:var(--shell)}
+.r-head::before{left:-7px;border-radius:4px 0 0 4px}
+.r-head::after{right:-7px;border-radius:0 4px 4px 0}
+.r-cam{position:absolute;left:50%;top:-13px;width:30px;height:15px;margin-left:-15px;border-radius:9px 9px 0 0;background:var(--shell)}
+.r-cam::after{content:"";position:absolute;left:10px;top:3px;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#7fa3c4 0 16%,#1d3146 22% 58%,#05080b 62%)}
+.r-head .scr{--ew:28px;--eg:26px;display:grid;place-items:center;height:100%;border-radius:16px;background:var(--scr)}
+.r-neck{width:30px;height:14px;background:color-mix(in srgb,var(--shell) 72%,var(--paper-2))}
+.r-base{width:132px;height:24px;border-radius:14px 14px 6px 6px;background:var(--shell)}
+.r-tag{position:absolute;top:0;left:calc(50% + 26px);font:500 8.5px/1.35 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+
+/* an app that ships inside a minor project (Logic Drop in Logic OS) */
+.incl{margin-top:20px;padding:2px 0 2px 18px;border-left:1.5px solid var(--ink)}
+.incl-lede{margin:8px 0 0;font-size:15.5px;line-height:1.5}
+.incl .points{margin-top:12px}
+.incl .points li{font-size:14.5px}
 
 /* revision history */
 .table-scroll{overflow-x:auto}
@@ -265,6 +346,7 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{transition:none!important}
+  .face{animation:none}
 }
 </style>
 </head>
@@ -400,20 +482,19 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
         <p class="proj-lede">An AI companion that lives across AR glasses, a smartwatch and a desk robot, and reacts to how you feel.</p>
         <div class="proj-body">
           <ul class="points">
-            <li>Designed every part in Fusion 360 and printed them in PETG and PLA+, including a glasses frame small enough to hold a custom PCB.</li>
-            <li>Laid out that PCB in EasyEDA and had it made by JLCPCB.</li>
-            <li>Wrote the ESP32-S3 firmware in C++ for the glasses and the watch, with LVGL animations for the AI's 7 emotions.</li>
-            <li>Built the Flutter app that syncs all three devices over Bluetooth and does the heavy processing.</li>
-            <li>The robot reads your mood from its camera using Python and MediaPipe. Heart rate, SpO2 and GPS also shape what the AI says.</li>
+            <li>AURA has 7 emotions. As you talk it picks one, and the glasses, the watch and the robot all change to it together.</li>
+            <li>I built the Flutter app at the centre. It pairs all three devices over Bluetooth, talks to ChatGPT and does the heavy processing.</li>
+            <li>Heart rate and SpO2 from the watch, and GPS from the phone, shape what AURA says. It can ask how the beach is, or why you're at a hospital.</li>
+            <li>It sets small goals, like walking 5,000 steps. The watch counts them and the glasses keep the goal in view.</li>
           </ul>
           <figure class="typ">
             <figcaption>Typical application</figcaption>
             <div class="dia-scroll">
               <div class="dia">
                 <div class="dia-col bus-r">
-                  <div class="branch"><div class="node"><b>AR glasses</b><span>ESP32-S3 · display · mic</span></div><div class="wire"></div></div>
-                  <div class="branch"><div class="node"><b>Smartwatch</b><span>ESP32-S3 · MAX30102</span></div><div class="wire"></div></div>
-                  <div class="branch"><div class="node"><b>Desk robot</b><span>Pi 4 · camera</span></div><div class="wire"></div></div>
+                  <div class="branch"><a class="node" href="#aura-glasses"><b>AR glasses</b><span>ESP32-S3 · display · mic</span></a><div class="wire"></div></div>
+                  <div class="branch"><a class="node" href="#aura-watch"><b>Smartwatch</b><span>ESP32-S3 · MAX30102</span></a><div class="wire"></div></div>
+                  <div class="branch"><a class="node" href="#aura-robot"><b>Desk robot</b><span>Pi 4 · camera</span></a><div class="wire"></div></div>
                 </div>
                 <div class="wire"><i>Bluetooth</i></div>
                 <div class="node hot"><b>Phone</b><span>Flutter app · GPS</span></div>
@@ -424,20 +505,150 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
           </figure>
         </div>
         <dl class="specs">
-          <div><dt>Controllers</dt><dd>ESP32-S3 ×2, Raspberry Pi 4</dd></div>
-          <div><dt>Link</dt><dd>Bluetooth to the phone</dd></div>
+          <div><dt>Devices</dt><dd>AR glasses, smartwatch, desk robot</dd></div>
+          <div><dt>Hub</dt><dd>Flutter app, Bluetooth</dd></div>
           <div><dt>Made with</dt><dd>Fusion 360, EasyEDA, Bambu Lab A1 Mini</dd></div>
           <div><dt>My part</dt><dd>App, firmware, CAD, PCB, vision</dd></div>
         </dl>
         <ul class="stack">
-          <li><button class="tag" type="button" data-pin="fusion" aria-pressed="false">Fusion 360</button></li>
-          <li><button class="tag" type="button" data-pin="pcb" aria-pressed="false">PCB design</button></li>
-          <li><button class="tag" type="button" data-pin="esp32" aria-pressed="false">ESP32-S3</button></li>
-          <li><button class="tag" type="button" data-pin="cpp" aria-pressed="false">C++</button></li>
           <li><button class="tag" type="button" data-pin="flutter" aria-pressed="false">Flutter</button></li>
-          <li><button class="tag" type="button" data-pin="python" aria-pressed="false">Python</button></li>
-          <li><span class="tag">MediaPipe</span></li>
+          <li><button class="tag" type="button" data-pin="ble" aria-pressed="false">Bluetooth</button></li>
+          <li><button class="tag" type="button" data-pin="ai" aria-pressed="false">ChatGPT</button></li>
         </ul>
+
+        <div class="subs" data-emo="calm">
+          <div class="subs-head">
+            <p class="subs-k">Inside AURA · 3 devices</p>
+            <p class="subs-emo" aria-hidden="true">Mood on all three: <b data-emo-label>calm</b></p>
+          </div>
+
+          <article class="proj sub" id="aura-glasses" data-name="AURA glasses" data-skills="fusion print pcb esp32 ble cpp">
+            <div class="proj-head">
+              <h3><span class="sub-pn">01</span>AR glasses</h3>
+              <p class="proj-meta">ESP32-S3 Mini · custom PCB</p>
+            </div>
+            <div class="sub-grid">
+              <div>
+                <p class="proj-lede">Glasses with a small display, a speaker and a mic, so you can talk to AURA and see how it feels while it answers.</p>
+                <ul class="points">
+                  <li>Designed the frame in Fusion 360 and printed it, small enough to wear but with room for the electronics.</li>
+                  <li>Laid out a custom board around the ESP32-S3 Mini in EasyEDA to fit inside that frame, and had JLCPCB make it.</li>
+                  <li>Wrote the C++ firmware that runs the display, mic and speaker and keeps them in step with the phone over Bluetooth.</li>
+                  <li>The display shows AURA's emotion as you talk, with your current goal, like walking 5,000 steps, pinned in the top-right corner.</li>
+                </ul>
+              </div>
+              <figure class="dev">
+                <div class="dev-art glasses" aria-hidden="true">
+                  <div class="lens"></div>
+                  <div class="bridge"></div>
+                  <div class="lens hud">
+                    <span class="hud-task">Walk 5k<b>3,240</b></span>
+                    <div class="face"><i class="eye"></i><i class="eye"></i></div>
+                  </div>
+                </div>
+                <figcaption>The display · illustration</figcaption>
+              </figure>
+            </div>
+            <dl class="specs">
+              <div><dt>Controller</dt><dd>ESP32-S3 Mini</dd></div>
+              <div><dt>Board</dt><dd>Custom, EasyEDA, made by JLCPCB</dd></div>
+              <div><dt>I/O</dt><dd>Display, speaker, mic</dd></div>
+              <div><dt>Frame</dt><dd>Fusion 360, 3D printed</dd></div>
+            </dl>
+            <ul class="stack">
+              <li><button class="tag" type="button" data-pin="fusion" aria-pressed="false">Fusion 360</button></li>
+              <li><button class="tag" type="button" data-pin="print" aria-pressed="false">3D printing</button></li>
+              <li><button class="tag" type="button" data-pin="pcb" aria-pressed="false">PCB design</button></li>
+              <li><button class="tag" type="button" data-pin="esp32" aria-pressed="false">ESP32-S3</button></li>
+              <li><button class="tag" type="button" data-pin="cpp" aria-pressed="false">C++</button></li>
+            </ul>
+          </article>
+
+          <article class="proj sub" id="aura-watch" data-name="AURA watch" data-skills="esp32 lvgl ble cpp">
+            <div class="proj-head">
+              <h3><span class="sub-pn">02</span>Smartwatch</h3>
+              <p class="proj-meta">ESP32-S3 · LVGL · MAX30102</p>
+            </div>
+            <div class="sub-grid">
+              <div>
+                <p class="proj-lede">A watch that reads your pulse, counts your steps and wears AURA's face on your wrist.</p>
+                <ul class="points">
+                  <li>Built on an ESP32-S3 smartwatch dev kit, with all of the firmware written by me in C++.</li>
+                  <li>Drew AURA's 7 emotions as LVGL animations, so the face on the watch changes with the conversation.</li>
+                  <li>A MAX30102 reads heart rate and SpO2 and sends them to the phone, where they shape what AURA says.</li>
+                  <li>Counts your steps toward the goals AURA sets, while the glasses keep the target in view.</li>
+                </ul>
+              </div>
+              <figure class="dev">
+                <div class="dev-art watch" aria-hidden="true">
+                  <div class="strap"></div>
+                  <div class="case">
+                    <div class="scr">
+                      <div class="w-top"><span>♥ 78</span><span>98%</span></div>
+                      <div class="face"><i class="eye"></i><i class="eye"></i></div>
+                      <div class="w-steps">3,240 / 5,000 steps<span class="w-bar"><i></i></span></div>
+                    </div>
+                  </div>
+                  <div class="strap"></div>
+                </div>
+                <figcaption>The watch face · illustration</figcaption>
+              </figure>
+            </div>
+            <dl class="specs">
+              <div><dt>Controller</dt><dd>ESP32-S3 watch kit</dd></div>
+              <div><dt>Sensor</dt><dd>MAX30102, heart rate and SpO2</dd></div>
+              <div><dt>Interface</dt><dd>LVGL animations</dd></div>
+              <div><dt>Link</dt><dd>Bluetooth to the phone</dd></div>
+            </dl>
+            <ul class="stack">
+              <li><button class="tag" type="button" data-pin="esp32" aria-pressed="false">ESP32-S3</button></li>
+              <li><button class="tag" type="button" data-pin="lvgl" aria-pressed="false">LVGL</button></li>
+              <li><button class="tag" type="button" data-pin="cpp" aria-pressed="false">C++</button></li>
+              <li><button class="tag" type="button" data-pin="ble" aria-pressed="false">Bluetooth</button></li>
+            </ul>
+          </article>
+
+          <article class="proj sub" id="aura-robot" data-name="AURA robot" data-skills="rpi python ai ble">
+            <div class="proj-head">
+              <h3><span class="sub-pn">03</span>Desk robot</h3>
+              <p class="proj-meta">Raspberry Pi 4 · camera</p>
+            </div>
+            <div class="sub-grid">
+              <div>
+                <p class="proj-lede">A small robot for your desk that watches your face to tell how you feel, and shows AURA's mood on its screen.</p>
+                <ul class="points">
+                  <li>Runs on a Raspberry Pi 4 with a camera and a screen.</li>
+                  <li>I wrote its vision in Python with MediaPipe. It reads your expression from the camera, so AURA knows when you're happy or sad.</li>
+                  <li>That reading goes to the phone with everything else, so AURA answers how you look as well as what you say.</li>
+                  <li>Its screen shows the same emotion as the glasses and the watch.</li>
+                </ul>
+              </div>
+              <figure class="dev">
+                <div class="dev-art robot" aria-hidden="true">
+                  <span class="r-tag">◂ Camera<br>MediaPipe</span>
+                  <div class="r-head">
+                    <span class="r-cam"></span>
+                    <div class="scr"><div class="face"><i class="eye"></i><i class="eye"></i></div></div>
+                  </div>
+                  <div class="r-neck"></div>
+                  <div class="r-base"></div>
+                </div>
+                <figcaption>The robot · illustration</figcaption>
+              </figure>
+            </div>
+            <dl class="specs">
+              <div><dt>Computer</dt><dd>Raspberry Pi 4</dd></div>
+              <div><dt>Input</dt><dd>Camera</dd></div>
+              <div><dt>Vision</dt><dd>Python, MediaPipe</dd></div>
+              <div><dt>My part</dt><dd>The emotion vision</dd></div>
+            </dl>
+            <ul class="stack">
+              <li><button class="tag" type="button" data-pin="rpi" aria-pressed="false">Raspberry Pi</button></li>
+              <li><button class="tag" type="button" data-pin="python" aria-pressed="false">Python</button></li>
+              <li><button class="tag" type="button" data-pin="ai" aria-pressed="false">MediaPipe</button></li>
+            </ul>
+          </article>
+        </div>
       </article>
 
       <article class="proj" id="hand" data-name="HAND" data-skills="esp32 ble cpp kotlin">
@@ -510,13 +721,22 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
           <p class="proj-lede">My own Android 16 ROM for the Redmi 13 5G, built from LineageOS 23.2 on my home server.</p>
           <ul class="points">
             <li>Own signing keys, branding and boot animation, plus zram tuning for smoother multitasking.</li>
-            <li>Logic Drop, a Kotlin and Compose app that speaks the open LocalSend protocol, sends files to a Mac, iPhone or Windows PC, with a QR fallback for any browser.</li>
             <li>Builds run as a systemd service that picks up again after a power cut.</li>
           </ul>
+          <div class="incl" id="logicdrop">
+            <p class="subs-k">Ships with · Logic Drop</p>
+            <p class="incl-lede">AirDrop only works between Apple devices, which leaves Android phones out, budget ones most of all. Logic Drop sends files between an Android phone and a Mac on the same Wi-Fi.</p>
+            <ul class="points">
+              <li>No cable, no cloud and no internet: files go straight across the local network.</li>
+              <li>Share from any app, or tap the Quick Settings tile to receive for 10 minutes. Every incoming file asks before it lands.</li>
+              <li>Written in Kotlin and Jetpack Compose on the open LocalSend protocol, so it reaches iPhones and Windows PCs too. Anything with a browser can use a QR code instead.</li>
+            </ul>
+          </div>
           <ul class="stack">
             <li><button class="tag" type="button" data-pin="aosp" aria-pressed="false">Android ROMs</button></li>
             <li><button class="tag" type="button" data-pin="kotlin" aria-pressed="false">Kotlin</button></li>
             <li><span class="tag">Jetpack Compose</span></li>
+            <li><span class="tag">LocalSend</span></li>
             <li><span class="tag">Linux</span></li>
           </ul>
         </article>
@@ -919,7 +1139,8 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
     const hits = projects.filter(p => { const on = !!cur && p.dataset.skills.split(' ').includes(cur); p.classList.toggle('is-lit', on); return on; });
     if (!cur) { out.innerHTML = idle; note.hidden = true; return; }
     const info = PIN[cur];
-    const links = hits.map(p => `<a href="#${p.id}">${p.dataset.name}</a>`).join(', ');
+    // name AURA's devices rather than AURA itself when one of them is lit
+    const links = hits.filter(p => !hits.some(q => q !== p && p.contains(q))).map(p =>`<a href="#${p.id}">${p.dataset.name}</a>`).join(', ');
     out.innerHTML = `<span class="k">Pin ${info.n} · ${info.label}</span>${info.desc} <span class="used">Used in ${links}.</span>`;
     note.hidden = false;
     note.innerHTML = `Lit: ${info.label} <button type="button" class="linkbtn" data-clear>Show all</button>`;
@@ -952,6 +1173,22 @@ button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);colo
   const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false });
   const tick = () => { clock.textContent = fmt.format(new Date()) + ' IST'; };
   tick(); setInterval(tick, 30000);
+})();
+
+/* AURA's mood: the three device drawings change emotion together, the way the
+   real devices do mid-conversation. Runs only while the section is on screen. */
+(() => {
+  const subs = document.querySelector('.subs');
+  if (!subs) return;
+  const label = subs.querySelector('[data-emo-label]');
+  const moods = ['calm', 'happy', 'surprised', 'sad'];
+  let i = 0, timer = null;
+  const show = () => { subs.dataset.emo = moods[i]; label.textContent = moods[i]; };
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { i = 1; show(); return; }
+  new IntersectionObserver(([e]) => {
+    clearInterval(timer);
+    if (e.isIntersecting) timer = setInterval(() => { i = (i + 1) % moods.length; show(); }, 2600);
+  }).observe(subs);
 })();
 </script>
 </body>
