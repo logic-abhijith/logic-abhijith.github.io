@@ -312,6 +312,21 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
 .incl .points{margin-top:12px}
 .incl .points li{font-size:14.5px}
 
+/* full-width minor project (Home lab) with its relay board */
+.minor .wide{grid-column:1/-1}
+.wide-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;margin-top:16px}
+.wide-cols .points{margin-top:0}
+.wide-cols .incl{margin-top:0}
+@media (min-width:900px){.wide-cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px;align-items:start}}
+.relays{margin:16px 0 0}
+.relays figcaption{margin-top:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.relay-board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;max-width:400px;padding:12px 10px 10px;border-radius:6px;background:var(--mask);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--silk) 12%,transparent)}
+.relay{display:grid;justify-items:center;gap:7px;padding:0;border:0;background:none;cursor:pointer;font:600 8px/1 var(--mono)}
+.relay span{display:grid;place-items:center;width:100%;aspect-ratio:.78;border-radius:3px;background:#2a62c9;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25);color:#e8eefc;transition:transform .08s}
+.relay i{width:7px;height:7px;border-radius:50%;background:#4a1714;transition:background .15s,box-shadow .15s}
+.relay[aria-pressed="true"] i{background:#ff4d3d;box-shadow:0 0 8px #ff4d3d}
+.relay:active span{transform:translateY(1px)}
+
 /* revision history */
 .table-scroll{overflow-x:auto}
 .rev{width:100%;border-collapse:collapse;font-size:15.5px}
@@ -726,6 +741,47 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
           </ul>
         </article>
 
+        <article class="proj wide" id="homelab" data-name="Home lab" data-skills="kotlin ble">
+          <div class="proj-head">
+            <h3>Home lab</h3>
+            <p class="proj-meta">2026 · Personal</p>
+          </div>
+          <p class="proj-lede">A Debian server on hardware that was only ever meant for Windows, and a room I run from my phone.</p>
+          <div class="wide-cols">
+            <ul class="points">
+              <li>Got Debian 13 running on an AMD 4700S desktop kit, 8 cores and 16 threads on a board that officially supports only Windows.</li>
+              <li>Set it up to run headless: key-only SSH, a fixed address on the network, and Docker with Compose for services.</li>
+              <li>Runs Nextcloud as my own cloud storage, so my files and photos live at home instead of on someone else's servers.</li>
+              <li>It's the machine Logic OS is built on.</li>
+            </ul>
+            <div class="incl" id="room">
+              <p class="subs-k">Also built · Room automation</p>
+              <p class="incl-lede">An 8-channel relay module switches things in my room, my PC is controlled over the LAN, and a Kotlin app I wrote runs it all from my phone.</p>
+              <figure class="relays">
+                <div class="relay-board" role="group" aria-label="8-channel relay module">
+                  <button class="relay" type="button" aria-pressed="true" aria-label="Relay 1"><span>K1</span><i></i></button>
+                  <button class="relay" type="button" aria-pressed="false" aria-label="Relay 2"><span>K2</span><i></i></button>
+                  <button class="relay" type="button" aria-pressed="true" aria-label="Relay 3"><span>K3</span><i></i></button>
+                  <button class="relay" type="button" aria-pressed="false" aria-label="Relay 4"><span>K4</span><i></i></button>
+                  <button class="relay" type="button" aria-pressed="false" aria-label="Relay 5"><span>K5</span><i></i></button>
+                  <button class="relay" type="button" aria-pressed="true" aria-label="Relay 6"><span>K6</span><i></i></button>
+                  <button class="relay" type="button" aria-pressed="false" aria-label="Relay 7"><span>K7</span><i></i></button>
+                  <button class="relay" type="button" aria-pressed="false" aria-label="Relay 8"><span>K8</span><i></i></button>
+                </div>
+                <figcaption>8-channel relay module · tap a relay</figcaption>
+              </figure>
+            </div>
+          </div>
+          <ul class="stack">
+            <li><span class="tag">Debian</span></li>
+            <li><span class="tag">Docker</span></li>
+            <li><span class="tag">Nextcloud</span></li>
+            <li><button class="tag" type="button" data-pin="kotlin" aria-pressed="false">Kotlin</button></li>
+            <li><span class="tag">Relays</span></li>
+            <li><span class="tag">LAN</span></li>
+          </ul>
+        </article>
+
         <article class="proj" id="isla" data-name="Isla Self-Serve" data-skills="python rpi">
           <div class="proj-head">
             <h3>Isla Self-Serve</h3>
@@ -1099,11 +1155,11 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
     esp32: { n: 4, label: 'ESP32-S3', desc: 'My usual microcontroller. Firmware in C++ for the HAND glove and for AURA’s glasses and watch.' },
     rpi: { n: 5, label: 'Raspberry Pi', desc: 'AURA’s desk robot runs on a Pi 4, and so did the Isla pump emulator.' },
     lvgl: { n: 6, label: 'LVGL', desc: 'Emotion animations on the AURA smartwatch’s small screen.' },
-    ble: { n: 7, label: 'BLE / Wi-Fi', desc: 'Bluetooth ties AURA’s three devices to the phone. HAND gloves share one ward Wi-Fi network, and Logic Drop sends files over local Wi-Fi.' },
+    ble: { n: 7, label: 'BLE / Wi-Fi', desc: 'Bluetooth ties AURA’s three devices to the phone. HAND gloves share one ward Wi-Fi network, and Logic Drop sends files over local Wi-Fi. My room and PC are run over the home LAN.' },
     cpp: { n: 8, label: 'C++', desc: 'All of the ESP32 firmware for HAND and AURA.' },
     python: { n: 9, label: 'Python', desc: 'MediaPipe vision on AURA’s robot, and the whole Isla station server in stdlib Python with SQLite.' },
     flutter: { n: 10, label: 'Flutter', desc: 'The AURA phone app, and the pet marketplace app I ship for iOS and Android.' },
-    kotlin: { n: 11, label: 'Kotlin', desc: 'HAND’s ward monitoring app, and Logic Drop in Jetpack Compose.' },
+    kotlin: { n: 11, label: 'Kotlin', desc: 'HAND’s ward monitoring app, Logic Drop in Jetpack Compose, and the app that runs my room.' },
     aosp: { n: 12, label: 'Android ROMs', desc: 'Logic OS, my own LineageOS-based Android 16 build for the Redmi 13 5G.' },
     node: { n: 13, label: 'Node.js', desc: 'The listening room’s server: WebSockets, clock sync and WebRTC signalling.' },
     ai: { n: 14, label: 'AI & vision', desc: 'ChatGPT and MediaPipe built into AURA, plus AI training and evaluation work for Handshake AI and Outlier.' }
@@ -1175,4 +1231,8 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
     if (e.isIntersecting) timer = setInterval(() => { i = (i + 1) % moods.length; show(); }, 2600);
   }).observe(subs);
 })();
+
+/* The home lab's relay board: tap a relay to switch it. */
+document.querySelectorAll('.relay').forEach(b => b.addEventListener('click', () =>
+  b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'))));
 </script>
