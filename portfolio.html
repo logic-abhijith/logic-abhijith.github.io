@@ -1,0 +1,941 @@
+<title>Abhijith S</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Abhijith S builds devices end to end: parts in Fusion 360, circuit boards, ESP32 firmware and Flutter apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap">
+<style>
+/* Layout: the portfolio as a component datasheet. The hero is the board itself
+   (soldermask, copper, silkscreen); below it, ruled datasheet sections with the
+   section label held in a left margin column. */
+:root{
+  --paper:#f2f3ee;
+  --paper-2:#e7eae2;
+  --ink:#131c17;
+  --muted:#55625a;
+  --rule:#c8cec5;
+  --accent:#7d5e14;
+  --lead:#b8954a;
+  --mask:#0f4a34;
+  --mask-hi:#1b6447;
+  --trace:#25784f;
+  --silk:#f1efe4;
+  --gold:#d8b25a;
+  --gold-ink:#1d1606;
+  --pkg:#1a1d1b;
+  --pkg-ink:#9aa39c;
+  --shadow:rgba(8,36,24,.42);
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"Martian Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --top-h:56px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0c120f; --paper-2:#131b17; --ink:#e2e7df; --muted:#95a299; --rule:#26312b;
+    --accent:#d8b45e; --lead:#9a7f42;
+    --mask:#0d4430; --mask-hi:#175a40; --trace:#22704b; --silk:#efede2; --gold:#d8b25a; --gold-ink:#1d1606;
+    --pkg:#1e2220; --pkg-ink:#9aa39c; --shadow:rgba(0,0,0,.55);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0c120f; --paper-2:#131b17; --ink:#e2e7df; --muted:#95a299; --rule:#26312b;
+  --accent:#d8b45e; --lead:#9a7f42;
+  --mask:#0d4430; --mask-hi:#175a40; --trace:#22704b; --silk:#efede2; --gold:#d8b25a; --gold-ink:#1d1606;
+  --pkg:#1e2220; --pkg-ink:#9aa39c; --shadow:rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--top-h) + 20px)}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+h1,h2,h3{text-wrap:balance}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.wrap{max-width:1200px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:720px){.wrap{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+
+/* running header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--paper);border-bottom:1px solid var(--rule)}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:var(--top-h)}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;font-weight:700;white-space:nowrap;flex:none}
+.brand .pn{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.06em}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;text-decoration:none;padding:8px 10px;border-radius:4px;white-space:nowrap;color:var(--muted)}
+.nav a:hover{color:var(--ink);background:var(--paper-2)}
+@media (max-width:560px){.brand .pn{display:none}.nav .opt{display:none}.nav a{padding:8px 6px;font-size:10px;letter-spacing:.03em}}
+
+/* the board */
+.hero{padding-block:20px 0}
+.board{position:relative;isolation:isolate;overflow:hidden;border-radius:20px;color:var(--silk);
+  background:radial-gradient(90% 70% at 12% 0%,var(--mask-hi),transparent 62%),var(--mask);
+  box-shadow:0 30px 50px -30px var(--shadow),inset 0 0 0 1px color-mix(in srgb,var(--silk) 8%,transparent)}
+.board canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.board-in{position:relative;z-index:1;container-type:inline-size;display:grid;gap:clamp(14px,2vw,22px);
+  padding-inline:clamp(24px,4.6vw,56px);padding-block:clamp(42px,4.6vw,56px) clamp(40px,3.4vw,44px)}
+.silk{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--silk)}
+.silk-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 16px}
+.silk-row span{opacity:.85}
+.name{margin:0;width:fit-content;max-width:100%;font-family:var(--display);font-stretch:125%;font-weight:850;
+  font-size:clamp(30px,13.4cqi,176px);line-height:.86;letter-spacing:-.015em;text-transform:uppercase;color:var(--silk)}
+.board-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;align-items:end}
+.board-copy{display:grid;gap:14px;max-width:34rem}
+.role{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0}
+.lede{margin:0;font-size:clamp(17px,1.9vw,21px);line-height:1.45;color:var(--silk)}
+.meta{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:color-mix(in srgb,var(--silk) 72%,transparent)}
+.zone{min-height:310px}
+.silk-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 16px}
+.silk-foot span{opacity:.5;font-size:9.5px}
+@media (max-width:760px){.board-grid{grid-template-columns:minmax(0,1fr)}.zone{min-height:250px}}
+
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid transparent;
+  font:600 14px/1 var(--body);text-decoration:none;cursor:pointer;background:none;color:inherit;transition:background-color .15s,border-color .15s,transform .15s}
+.btn:active{transform:translateY(1px)}
+.btn svg{width:15px;height:15px;flex:none}
+.btn-gold{background:var(--gold);color:var(--gold-ink)}
+.btn-gold:hover{background:color-mix(in srgb,var(--gold) 82%,var(--silk))}
+.btn-silk{border-color:color-mix(in srgb,var(--silk) 50%,transparent);color:var(--silk);font-family:var(--mono);font-size:12px;font-weight:500}
+.btn-silk:hover{border-color:var(--silk)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:color-mix(in srgb,var(--ink) 85%,var(--accent))}
+.btn-line{border-color:var(--rule);color:var(--ink)}
+.btn-line:hover{border-color:var(--ink)}
+
+/* datasheet sections */
+main{padding-top:48px}
+.sec{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px 56px;padding-block:52px;border-top:1px solid var(--ink)}
+.sec-head{align-self:start;position:sticky;top:calc(var(--top-h) + env(safe-area-inset-top,0px) + 28px)}
+.eyebrow{margin:0 0 8px;font-family:var(--mono);font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--accent)}
+.sec h2{margin:0;font-family:var(--display);font-stretch:118%;font-weight:800;font-size:32px;line-height:1;letter-spacing:-.01em}
+.sec-note{margin:14px 0 0;font-size:14px;line-height:1.5;color:var(--muted);max-width:26ch}
+.filter-note{margin:14px 0 0;font-family:var(--mono);font-size:11px;color:var(--accent);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.linkbtn{font:inherit;color:inherit;background:none;border:0;padding:4px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media (max-width:880px){.sec{grid-template-columns:minmax(0,1fr);padding-block:40px}.sec-head{position:static}.sec-note{max-width:52ch}}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px 48px;align-items:start}
+.about-text p{margin:0 0 14px;max-width:56ch;font-size:17px}
+.about-text p:first-child{font-size:clamp(21px,2.3vw,26px);line-height:1.3;font-weight:500;letter-spacing:-.005em;margin-bottom:20px}
+.spec{width:100%;border-collapse:collapse;font-size:14.5px}
+.spec caption{text-align:left;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding-bottom:10px}
+.spec th,.spec td{text-align:left;vertical-align:top;padding:9px 0;border-bottom:1px solid var(--rule)}
+.spec thead th{font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--ink);padding-top:0}
+.spec tbody th{font-weight:600;width:34%;padding-right:16px}
+@media (max-width:980px){.about{grid-template-columns:minmax(0,1fr)}}
+
+/* pinout */
+.pinout{--pitch:44px;--padb:20px;--chip-w:clamp(150px,20vw,210px);display:grid;grid-template-columns:minmax(0,1fr) var(--chip-w) minmax(0,1fr);grid-template-areas:"l c r";max-width:720px}
+.pins{grid-area:l;list-style:none;margin:0;padding:var(--padb) 0;display:flex;flex-direction:column}
+.pins-r{grid-area:r}
+.pins li{height:var(--pitch)}
+.pin{display:flex;align-items:center;gap:10px;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer;color:var(--ink);
+  font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;text-align:left}
+.pins-l .pin{justify-content:flex-end}
+.pins-l .pin-label{order:1;text-align:right}
+.pins-l .pin-lead{order:2}
+.pin-no{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.pin-lead{flex:none;width:34px;height:7px;background:var(--lead);transition:background-color .15s,box-shadow .15s,width .15s}
+.pin-label{min-width:0;transition:color .15s}
+.pin:hover .pin-label{color:var(--accent)}
+.pin:hover .pin-lead{background:var(--accent)}
+.pin[aria-pressed="true"] .pin-label{color:var(--accent);font-weight:700}
+.pin[aria-pressed="true"] .pin-lead{background:var(--accent);box-shadow:0 0 12px color-mix(in srgb,var(--accent) 70%,transparent);width:42px}
+.chip{grid-area:c;position:relative;display:grid;grid-template-columns:26px minmax(0,1fr) 26px;padding-block:var(--padb);background:var(--pkg);color:var(--pkg-ink);border-radius:6px;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pkg-ink) 18%,transparent)}
+.chip::before{content:"";position:absolute;top:-11px;left:50%;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--paper)}
+.chip-col{display:flex;flex-direction:column}
+.chip-n{height:var(--pitch);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9.5px;transition:color .15s}
+.chip-n.on{color:var(--gold);font-weight:700}
+.chip-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding-inline:4px}
+.chip-dot{width:8px;height:8px;border-radius:50%;background:color-mix(in srgb,var(--pkg-ink) 35%,transparent);position:absolute;top:22px;left:32px}
+.chip-pn{font-family:var(--mono);font-size:10px;letter-spacing:.1em}
+.chip-name{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(13px,1.5vw,17px);line-height:1.05;color:var(--silk);text-transform:uppercase}
+.chip-pkg{font-family:var(--mono);font-size:9px;letter-spacing:.08em;opacity:.8}
+.pin-out{margin:24px 0 0;max-width:720px;padding-top:14px;border-top:1px solid var(--rule);font-size:15.5px;min-height:5.5em}
+.pin-out .k{display:block;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px}
+.pin-out b{font-weight:700}
+.pin-out .used{color:var(--muted)}
+.pin-out .used a{color:var(--accent);text-underline-offset:3px}
+@media (max-width:620px){
+  .pinout{grid-template-columns:62px minmax(0,1fr);grid-template-areas:"c l" "c r";column-gap:0}
+  .pins-l{padding-bottom:0}
+  .pins-r{flex-direction:column-reverse;padding-top:0}
+  .pins-l .pin{justify-content:flex-start}
+  .pins-l .pin-label{order:3;text-align:left}
+  .pins-l .pin-lead{order:0}
+  .pin-no{position:static;width:22px;height:auto;clip:auto;overflow:visible;order:1;color:var(--muted);font-size:10px;text-align:right}
+  .pin-lead{width:22px}
+  .pin[aria-pressed="true"] .pin-lead{width:26px}
+  .pin .pin-label{order:3}
+  .chip{grid-template-columns:minmax(0,1fr)}
+  .chip-col{display:none}
+  .chip::before{top:-11px}
+  .chip-dot{left:50%;margin-left:-4px;top:26px}
+  .chip-mid{writing-mode:vertical-rl;transform:rotate(180deg);flex-direction:row;gap:14px}
+  .chip-name{font-size:17px}
+}
+
+/* applications */
+.proj{padding-block:36px;border-top:1px solid var(--rule);transition:opacity .25s,filter .25s}
+.proj:first-child{border-top:0;padding-top:0}
+.proj-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 24px}
+.proj h3{margin:0;font-family:var(--display);font-stretch:125%;font-weight:850;font-size:clamp(30px,4.4vw,48px);line-height:.95;letter-spacing:-.01em;text-transform:uppercase;transition:color .2s}
+.proj-meta{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.proj-lede{margin:14px 0 0;font-size:clamp(18px,2vw,21px);line-height:1.4;max-width:58ch}
+.proj-body{display:grid;grid-template-columns:minmax(0,1fr);gap:26px;margin-top:22px}
+.points{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.points li{position:relative;padding-left:20px;font-size:15.5px;max-width:62ch}
+.points li::before{content:"";position:absolute;left:2px;top:.62em;width:8px;height:3px;background:var(--lead)}
+.stack{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0;padding:0;list-style:none}
+.tag{display:inline-block;font:500 10.5px/1 var(--mono);letter-spacing:.04em;padding:7px 9px;border:1px solid var(--rule);border-radius:3px;background:none;color:var(--muted)}
+button.tag{cursor:pointer}
+button.tag:hover,button.tag[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.specs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:24px 0 0;border-top:1px solid var(--rule)}
+.specs div{padding:12px 16px 0 0}
+.specs dt{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.specs dd{margin:4px 0 0;font-size:14px}
+.minor{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px;border-top:1px solid var(--rule)}
+.minor .proj{border-top:0;padding-top:36px}
+.minor .proj:nth-child(n+3){border-top:1px solid var(--rule)}
+.minor h3{font-size:clamp(24px,2.8vw,30px);font-stretch:112%}
+.minor .proj-lede{font-size:17px}
+.minor .points{margin-top:16px}
+.minor .points li{font-size:15px}
+#work.is-filtering .proj:not(.is-lit){opacity:.28;filter:saturate(.3)}
+#work .proj.is-lit h3{color:var(--accent)}
+@media (max-width:900px){.specs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.minor{grid-template-columns:minmax(0,1fr)}.minor .proj:nth-child(n+2){border-top:1px solid var(--rule)}}
+
+/* typical application diagrams */
+.typ{margin:0;min-width:0}
+.typ figcaption{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.dia-scroll{overflow-x:auto;padding-bottom:6px}
+.dia{display:flex;align-items:center;width:max-content;padding:16px 2px 6px}
+.dia-col{position:relative;display:flex;flex-direction:column;gap:10px}
+.branch{display:grid;grid-template-columns:minmax(0,1fr) 22px;align-items:center}
+.branch.in{grid-template-columns:80px minmax(0,1fr)}
+.node{display:flex;flex-direction:column;justify-content:center;height:52px;padding:0 12px;border:1.5px solid var(--ink);border-radius:4px;background:var(--paper);white-space:nowrap}
+.node b{font-size:13.5px;line-height:1.2}
+.node span{font-family:var(--mono);font-size:9.5px;color:var(--muted);line-height:1.5}
+.node.hot{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
+.wire{position:relative;flex:none;width:80px;height:1.5px;background:var(--ink)}
+.branch .wire{width:auto}
+.wire i{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);font:normal 500 9px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.bus-r::after,.bus-l::before{content:"";position:absolute;top:26px;bottom:26px;width:1.5px;background:var(--ink)}
+.bus-r::after{right:0}
+.bus-l::before{left:0}
+
+/* revision history */
+.table-scroll{overflow-x:auto}
+.rev{width:100%;border-collapse:collapse;font-size:15.5px}
+.rev th{text-align:left;font-family:var(--mono);font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:0 16px 10px 0;border-bottom:1px solid var(--ink)}
+.rev td{padding:14px 16px 14px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.rev td:first-child{width:52px;font-family:var(--mono);font-weight:700;color:var(--accent)}
+.rev td:nth-child(2){width:104px;white-space:nowrap;font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:16px}
+
+/* ordering information */
+.order-lead{margin:0 0 22px;font-size:clamp(20px,2.4vw,26px);line-height:1.3;max-width:32ch;font-weight:500}
+.mail{display:block;margin:0 0 18px;font-family:var(--display);font-stretch:112%;font-weight:750;font-size:clamp(24px,4.4vw,44px);letter-spacing:-.01em;line-height:1.1;overflow-wrap:anywhere;user-select:all}
+.mail-row{display:flex;flex-wrap:wrap;gap:10px}
+.order{width:100%;max-width:640px;margin-top:36px}
+
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:20px 44px;border-top:1px solid var(--ink);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important}
+}
+</style>
+<!-- /head -->
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top"><span class="pn">AS-2026</span><span>Abhijith S</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#work">Work</a>
+      <a class="opt" href="#history">History</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap hero" id="top">
+  <section class="board" id="board" aria-label="Introduction">
+    <canvas id="pcb" aria-hidden="true"></canvas>
+    <div class="board-in">
+      <div class="silk-row silk">
+        <span data-keepout>AS-2026 · Rev F · 2026</span>
+        <span data-keepout>8.89°N 76.61°E</span>
+      </div>
+      <h1 class="name" data-keepout>Abhijith S</h1>
+      <div class="board-grid">
+        <div class="board-copy" data-keepout>
+          <p class="role">CAD · PCB · Firmware · Apps</p>
+          <p class="lede">I design the parts in Fusion 360, lay out the circuit board, write the ESP32 firmware and build the Flutter app that runs it all.</p>
+          <p class="meta">CSE graduate, 2026 · Kollam, Kerala</p>
+          <div class="btns">
+            <a class="btn btn-gold" href="#work">See my work
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v11M3.5 8.5 8 13l4.5-4.5"/></svg>
+            </a>
+            <button class="btn btn-silk" type="button" data-copy="logic3050@gmail.com" data-target="heroMail">
+              <span class="copy-label" id="heroMail">logic3050@gmail.com</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="5" width="8.5" height="8.5" rx="1.5"/><path d="M10.5 3.5V3A1.5 1.5 0 0 0 9 1.5H3A1.5 1.5 0 0 0 1.5 3v6A1.5 1.5 0 0 0 3 10.5h.5"/></svg>
+              <span class="sr">Copy email address</span>
+            </button>
+          </div>
+        </div>
+        <div class="zone" aria-hidden="true"></div>
+      </div>
+      <div class="silk-foot silk">
+        <span data-keepout>JLCJLCJLCJLC</span>
+        <span data-keepout>Designed in Kollam, Kerala</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<main class="wrap">
+
+  <section class="sec" id="about">
+    <div class="sec-head">
+      <p class="eyebrow">Description</p>
+      <h2>About</h2>
+    </div>
+    <div class="about">
+      <div class="about-text">
+        <p>I'm Abhijith. I like building the whole device: the enclosure in Fusion 360, the circuit board, the firmware, and the phone app that talks to it.</p>
+        <p>I graduated in Computer Science and Engineering from RIET Trivandrum in 2026. Both of my college projects were hardware: a smart glove for hospital patients, and an AI companion that runs across glasses, a watch and a robot.</p>
+        <p>Today I'm the only developer at a pet e-commerce startup, shipping its iOS and Android app in Flutter. I've also done AI training and evaluation work for Handshake AI and Outlier.</p>
+      </div>
+      <table class="spec">
+        <caption>Key specifications</caption>
+        <thead><tr><th scope="col">Parameter</th><th scope="col">Value</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Degree</th><td>B.Tech, Computer Science and Engineering, RIET Trivandrum, 2026</td></tr>
+          <tr><th scope="row">CAD</th><td>Fusion 360, 3 years</td></tr>
+          <tr><th scope="row">Fabrication</th><td>Bambu Lab A1 Mini in PETG and PLA+, boards from JLCPCB</td></tr>
+          <tr><th scope="row">Firmware</th><td>C++ on ESP32-S3, LVGL interfaces</td></tr>
+          <tr><th scope="row">Apps</th><td>Flutter for iOS and Android, Kotlin</td></tr>
+          <tr><th scope="row">Scripting</th><td>Python</td></tr>
+          <tr><th scope="row">Location</th><td>Kollam, Kerala, India (UTC+5:30)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="skills">
+    <div class="sec-head">
+      <p class="eyebrow">Pinout</p>
+      <h2>Skills</h2>
+      <p class="sec-note">Laid out like a chip. Pick a pin to light up the projects that use it.</p>
+    </div>
+    <div>
+      <div class="pinout">
+        <ul class="pins pins-l" aria-label="Pins 1 to 7, hardware">
+          <li><button class="pin" type="button" data-pin="fusion" aria-pressed="false"><span class="pin-no">1</span><span class="pin-label">Fusion 360</span><span class="pin-lead" aria-hidden="true"></span></button></li>
+          <li><button class="pin" type="button" data-pin="print" aria-pressed="false"><span class="pin-no">2</span><span class="pin-label">3D printing</span><span class="pin-lead" aria-hidden="true"></span></button></li>
+          <li><button class="pin" type="button" data-pin="pcb" aria-pressed="false"><span class="pin-no">3</span><span class="pin-label">PCB design</span><span class="pin-lead" aria-hidden="true"></span></button></li>
+          <li><button class="pin" type="button" data-pin="esp32" aria-pressed="false"><span class="pin-no">4</span><span class="pin-label">ESP32-S3</span><span class="pin-lead" aria-hidden="true"></span></button></li>
+          <li><button class="pin" type="button" data-pin="rpi" aria-pressed="false"><span class="pin-no">5</span><span class="pin-label">Raspberry Pi</span><span class="pin-lead" aria-hidden="true"></span></button></li>
+          <li><button class="pin" type="button" data-pin="lvgl" aria-pressed="false"><span class="pin-no">6</span><span class="pin-label">LVGL</span><span class="pin-lead" aria-hidden="true"></span></button></li>
+          <li><button class="pin" type="button" data-pin="ble" aria-pressed="false"><span class="pin-no">7</span><span class="pin-label">BLE / Wi-Fi</span><span class="pin-lead" aria-hidden="true"></span></button></li>
+        </ul>
+        <div class="chip" aria-hidden="true">
+          <div class="chip-col"><span class="chip-n" data-n="1">1</span><span class="chip-n" data-n="2">2</span><span class="chip-n" data-n="3">3</span><span class="chip-n" data-n="4">4</span><span class="chip-n" data-n="5">5</span><span class="chip-n" data-n="6">6</span><span class="chip-n" data-n="7">7</span></div>
+          <span class="chip-dot"></span>
+          <div class="chip-mid"><span class="chip-pn">AS-2026</span><span class="chip-name">Abhijith S</span><span class="chip-pkg">DIP-14 · Kollam</span></div>
+          <div class="chip-col"><span class="chip-n" data-n="14">14</span><span class="chip-n" data-n="13">13</span><span class="chip-n" data-n="12">12</span><span class="chip-n" data-n="11">11</span><span class="chip-n" data-n="10">10</span><span class="chip-n" data-n="9">9</span><span class="chip-n" data-n="8">8</span></div>
+        </div>
+        <ul class="pins pins-r" aria-label="Pins 8 to 14, software">
+          <li><button class="pin" type="button" data-pin="ai" aria-pressed="false"><span class="pin-no">14</span><span class="pin-lead" aria-hidden="true"></span><span class="pin-label">AI &amp; vision</span></button></li>
+          <li><button class="pin" type="button" data-pin="node" aria-pressed="false"><span class="pin-no">13</span><span class="pin-lead" aria-hidden="true"></span><span class="pin-label">Node.js</span></button></li>
+          <li><button class="pin" type="button" data-pin="aosp" aria-pressed="false"><span class="pin-no">12</span><span class="pin-lead" aria-hidden="true"></span><span class="pin-label">Android ROMs</span></button></li>
+          <li><button class="pin" type="button" data-pin="kotlin" aria-pressed="false"><span class="pin-no">11</span><span class="pin-lead" aria-hidden="true"></span><span class="pin-label">Kotlin</span></button></li>
+          <li><button class="pin" type="button" data-pin="flutter" aria-pressed="false"><span class="pin-no">10</span><span class="pin-lead" aria-hidden="true"></span><span class="pin-label">Flutter</span></button></li>
+          <li><button class="pin" type="button" data-pin="python" aria-pressed="false"><span class="pin-no">9</span><span class="pin-lead" aria-hidden="true"></span><span class="pin-label">Python</span></button></li>
+          <li><button class="pin" type="button" data-pin="cpp" aria-pressed="false"><span class="pin-no">8</span><span class="pin-lead" aria-hidden="true"></span><span class="pin-label">C++</span></button></li>
+        </ul>
+      </div>
+      <div class="pin-out" id="pinOut" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="work">
+    <div class="sec-head">
+      <p class="eyebrow">Applications</p>
+      <h2>Work</h2>
+      <p class="sec-note">Two hardware builds from college, then what I've made since.</p>
+      <p class="filter-note" id="workNote" hidden></p>
+    </div>
+    <div>
+      <article class="proj" id="aura" data-name="AURA" data-skills="fusion print pcb esp32 rpi lvgl ble cpp python flutter ai">
+        <div class="proj-head">
+          <h3>AURA</h3>
+          <p class="proj-meta">2026 · Major project, team of 2</p>
+        </div>
+        <p class="proj-lede">An AI companion that lives across AR glasses, a smartwatch and a desk robot, and reacts to how you feel.</p>
+        <div class="proj-body">
+          <ul class="points">
+            <li>Designed every part in Fusion 360 and printed them in PETG and PLA+, including a glasses frame small enough to hold a custom PCB.</li>
+            <li>Laid out that PCB in EasyEDA and had it made by JLCPCB.</li>
+            <li>Wrote the ESP32-S3 firmware in C++ for the glasses and the watch, with LVGL animations for the AI's 7 emotions.</li>
+            <li>Built the Flutter app that syncs all three devices over Bluetooth and does the heavy processing.</li>
+            <li>The robot reads your mood from its camera using Python and MediaPipe. Heart rate, SpO2 and GPS also shape what the AI says.</li>
+          </ul>
+          <figure class="typ">
+            <figcaption>Typical application</figcaption>
+            <div class="dia-scroll">
+              <div class="dia">
+                <div class="dia-col bus-r">
+                  <div class="branch"><div class="node"><b>AR glasses</b><span>ESP32-S3 · display · mic</span></div><div class="wire"></div></div>
+                  <div class="branch"><div class="node"><b>Smartwatch</b><span>ESP32-S3 · MAX30102</span></div><div class="wire"></div></div>
+                  <div class="branch"><div class="node"><b>Desk robot</b><span>Pi 4 · camera</span></div><div class="wire"></div></div>
+                </div>
+                <div class="wire"><i>Bluetooth</i></div>
+                <div class="node hot"><b>Phone</b><span>Flutter app · GPS</span></div>
+                <div class="wire"><i>API</i></div>
+                <div class="node"><b>ChatGPT</b><span>reply + emotion</span></div>
+              </div>
+            </div>
+          </figure>
+        </div>
+        <dl class="specs">
+          <div><dt>Controllers</dt><dd>ESP32-S3 ×2, Raspberry Pi 4</dd></div>
+          <div><dt>Link</dt><dd>Bluetooth to the phone</dd></div>
+          <div><dt>Made with</dt><dd>Fusion 360, EasyEDA, Bambu Lab A1 Mini</dd></div>
+          <div><dt>My part</dt><dd>App, firmware, CAD, PCB, vision</dd></div>
+        </dl>
+        <ul class="stack">
+          <li><button class="tag" type="button" data-pin="fusion" aria-pressed="false">Fusion 360</button></li>
+          <li><button class="tag" type="button" data-pin="pcb" aria-pressed="false">PCB design</button></li>
+          <li><button class="tag" type="button" data-pin="esp32" aria-pressed="false">ESP32-S3</button></li>
+          <li><button class="tag" type="button" data-pin="cpp" aria-pressed="false">C++</button></li>
+          <li><button class="tag" type="button" data-pin="flutter" aria-pressed="false">Flutter</button></li>
+          <li><button class="tag" type="button" data-pin="python" aria-pressed="false">Python</button></li>
+          <li><span class="tag">MediaPipe</span></li>
+        </ul>
+      </article>
+
+      <article class="proj" id="hand" data-name="HAND" data-skills="esp32 ble cpp kotlin">
+        <div class="proj-head">
+          <h3>HAND</h3>
+          <p class="proj-meta">2025 · Mini project, solo</p>
+        </div>
+        <p class="proj-lede">A smart glove for hospital patients who can't easily speak or move: 25 gestures, live vitals, and a headset built into the fingers.</p>
+        <div class="proj-body">
+          <ul class="points">
+            <li>Tracks heart rate and SpO2 continuously with a MAX30102 on an ESP32-S3 Mini, with firmware in C++.</li>
+            <li>Five flex sensors, one per finger, combine into 25 gestures: call a nurse, ask for water or food, or switch the room's light, fan and TV over IR.</li>
+            <li>A Kotlin app watches every glove on the ward over one shared Wi-Fi network.</li>
+            <li>Works as a Bluetooth headset too. Speakers sit in two fingertips and a mic in the palm, so holding your hand to your face works like a phone.</li>
+          </ul>
+          <figure class="typ">
+            <figcaption>Typical application</figcaption>
+            <div class="dia-scroll">
+              <div class="dia">
+                <div class="node hot"><b>Glove</b><span>ESP32-S3 · 5 flex · MAX30102</span></div>
+                <div class="wire" style="width:26px"></div>
+                <div class="dia-col bus-l">
+                  <div class="branch in"><div class="wire"><i>Wi-Fi</i></div><div class="node"><b>Ward app</b><span>Kotlin · every glove</span></div></div>
+                  <div class="branch in"><div class="wire"><i>IR</i></div><div class="node"><b>Room</b><span>light · fan · TV</span></div></div>
+                  <div class="branch in"><div class="wire"><i>Bluetooth</i></div><div class="node"><b>Phone</b><span>calls · assistant</span></div></div>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </div>
+        <dl class="specs">
+          <div><dt>Controller</dt><dd>ESP32-S3 Mini</dd></div>
+          <div><dt>Sensors</dt><dd>5 flex, MAX30102</dd></div>
+          <div><dt>Outputs</dt><dd>IR, speakers, vibration</dd></div>
+          <div><dt>My part</dt><dd>All of it</dd></div>
+        </dl>
+        <ul class="stack">
+          <li><button class="tag" type="button" data-pin="esp32" aria-pressed="false">ESP32-S3</button></li>
+          <li><button class="tag" type="button" data-pin="cpp" aria-pressed="false">C++</button></li>
+          <li><button class="tag" type="button" data-pin="kotlin" aria-pressed="false">Kotlin</button></li>
+          <li><button class="tag" type="button" data-pin="ble" aria-pressed="false">BLE / Wi-Fi</button></li>
+          <li><span class="tag">IR</span></li>
+        </ul>
+      </article>
+
+      <div class="minor">
+        <article class="proj" id="pets" data-name="Pet marketplace" data-skills="flutter">
+          <div class="proj-head">
+            <h3>Pet marketplace</h3>
+            <p class="proj-meta">2026 – now · Sole developer</p>
+          </div>
+          <p class="proj-lede">A pet e-commerce startup's app for buying and selling pets, with a supplies store, on iOS and Android from one Flutter codebase.</p>
+          <ul class="points">
+            <li>A custom UI system in place of stock Material, themed by animal.</li>
+            <li>Tuned for smooth scrolling: images decoded at display size, sliver lists, narrow Riverpod rebuilds.</li>
+            <li>Pedigree certificate checks with admin review, and a map-based checkout with pay on delivery.</li>
+          </ul>
+          <ul class="stack">
+            <li><button class="tag" type="button" data-pin="flutter" aria-pressed="false">Flutter</button></li>
+            <li><span class="tag">Riverpod</span></li>
+            <li><span class="tag">go_router</span></li>
+          </ul>
+        </article>
+
+        <article class="proj" id="logicos" data-name="Logic OS" data-skills="aosp kotlin ble">
+          <div class="proj-head">
+            <h3>Logic OS</h3>
+            <p class="proj-meta">2026 · Personal</p>
+          </div>
+          <p class="proj-lede">My own Android 16 ROM for the Redmi 13 5G, built from LineageOS 23.2 on my home server.</p>
+          <ul class="points">
+            <li>Own signing keys, branding and boot animation, plus zram tuning for smoother multitasking.</li>
+            <li>Logic Drop, a Kotlin and Compose app that speaks the open LocalSend protocol, sends files to a Mac, iPhone or Windows PC, with a QR fallback for any browser.</li>
+            <li>Builds run as a systemd service that picks up again after a power cut.</li>
+          </ul>
+          <ul class="stack">
+            <li><button class="tag" type="button" data-pin="aosp" aria-pressed="false">Android ROMs</button></li>
+            <li><button class="tag" type="button" data-pin="kotlin" aria-pressed="false">Kotlin</button></li>
+            <li><span class="tag">Jetpack Compose</span></li>
+            <li><span class="tag">Linux</span></li>
+          </ul>
+        </article>
+
+        <article class="proj" id="isla" data-name="Isla Self-Serve" data-skills="python rpi">
+          <div class="proj-head">
+            <h3>Isla Self-Serve</h3>
+            <p class="proj-meta">2026 · Prototype</p>
+          </div>
+          <p class="proj-lede">Pay-at-pump fuel payment. The driver pays on their phone and the pump stops at exactly the amount authorised.</p>
+          <ul class="points">
+            <li>A Python pump emulator on a Raspberry Pi that meters fuel to the millilitre and enforces the preset at the meter.</li>
+            <li>A station server in stdlib Python and SQLite with payment holds, crash recovery and remote price control.</li>
+            <li>An owner console with a live pump readout, totaliser reconciliation and tank days of cover.</li>
+          </ul>
+          <ul class="stack">
+            <li><button class="tag" type="button" data-pin="python" aria-pressed="false">Python</button></li>
+            <li><button class="tag" type="button" data-pin="rpi" aria-pressed="false">Raspberry Pi</button></li>
+            <li><span class="tag">SQLite</span></li>
+          </ul>
+        </article>
+
+        <article class="proj" id="listen" data-name="Synced listening room" data-skills="node">
+          <div class="proj-head">
+            <h3>Listening room</h3>
+            <p class="proj-meta">2026 · Personal</p>
+          </div>
+          <p class="proj-lede">Two phones, one queue, playing in sync to the same moment.</p>
+          <ul class="points">
+            <li>A Node and WebSocket server holds the playback position. Each phone corrects its clock NTP-style and steers onto it.</li>
+            <li>One queue mixes YouTube and local files from my home server.</li>
+            <li>A built-in WebRTC voice call, and it installs as a PWA.</li>
+          </ul>
+          <ul class="stack">
+            <li><button class="tag" type="button" data-pin="node" aria-pressed="false">Node.js</button></li>
+            <li><span class="tag">WebSockets</span></li>
+            <li><span class="tag">WebRTC</span></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="history">
+    <div class="sec-head">
+      <p class="eyebrow">Revision history</p>
+      <h2>History</h2>
+    </div>
+    <div class="table-scroll">
+      <table class="rev">
+        <thead><tr><th scope="col">Rev</th><th scope="col">Date</th><th scope="col">Change</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>Oct 2026</td><td>Built Logic OS, my own Android 16 ROM, with the Logic Drop file-sharing app.</td></tr>
+          <tr><td>E</td><td>Sep 2026</td><td>Joined a pet e-commerce startup as its only developer.</td></tr>
+          <tr><td>D</td><td>Aug 2026</td><td>Built the Isla Self-Serve pump bench and the synced listening room.</td></tr>
+          <tr><td>C</td><td>2026</td><td>Graduated in Computer Science and Engineering from RIET Trivandrum, and finished AURA with my teammate.</td></tr>
+          <tr><td>B</td><td>2025</td><td>Built HAND on my own as my mini project.</td></tr>
+          <tr><td>A</td><td>2023</td><td>Started designing parts in Fusion 360.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="contact">
+    <div class="sec-head">
+      <p class="eyebrow">Ordering information</p>
+      <h2>Contact</h2>
+    </div>
+    <div>
+      <p class="order-lead">If you need a device taken from a sketch to a working prototype with an app, I'd like to hear about it.</p>
+      <span class="mail" id="mail">logic3050@gmail.com</span>
+      <div class="mail-row">
+        <button class="btn btn-ink" type="button" data-copy="logic3050@gmail.com" data-target="mail"><span class="copy-label">Copy email</span></button>
+        <a class="btn btn-line" href="mailto:logic3050@gmail.com">Open mail app</a>
+      </div>
+      <table class="spec order">
+        <tbody>
+          <tr><th scope="row">Part number</th><td>AS-2026</td></tr>
+          <tr><th scope="row">Based in</th><td>Kollam, Kerala, India</td></tr>
+          <tr><th scope="row">Local time</th><td><span id="clock">IST</span> (UTC+5:30)</td></tr>
+          <tr><th scope="row">Open to</th><td>Embedded, CAD and app development work</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div class="foot">
+    <span>AS-2026 · Abhijith S · Rev F, October 2026</span>
+    <span>Designed and built in Kollam, Kerala</span>
+  </div>
+</footer>
+
+<script>
+/* The board: copper traces routed on a 12px grid around the text, with signal pulses. */
+(() => {
+  const board = document.getElementById('board');
+  const cv = document.getElementById('pcb');
+  const ctx = cv.getContext('2d');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  const G = 12;
+  const D = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]];
+  const HDR = ['3V3','GND','TX','RX','EN','IO0'];
+  let W = 0, H = 0, dpr = 1, cols = 0, rows = 0, occ = null;
+  let traces = [], fan = [], pulses = [], layer = null, C = {};
+  let raf = 0, last = 0, onScreen = true, spawnIn = 0, lastPoint = 0, lw = 0, lh = 0;
+  let rand = Math.random;
+
+  const seeded = a => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const at = (x, y) => y * cols + x;
+  const inside = (x, y) => x > 0 && y > 0 && x < cols - 1 && y < rows - 1;
+  const open = (x, y) => inside(x, y) && !occ[at(x, y)];
+  const take = (x, y) => { if (x >= 0 && y >= 0 && x < cols && y < rows) occ[at(x, y)] = 1; };
+  const px = v => v * G + G / 2;
+
+  function blockPx(x, y, w, h) {
+    const x0 = Math.max(0, Math.floor(x / G)), y0 = Math.max(0, Math.floor(y / G));
+    const x1 = Math.min(cols - 1, Math.floor((x + w) / G)), y1 = Math.min(rows - 1, Math.floor((y + h) / G));
+    for (let j = y0; j <= y1; j++) for (let i = x0; i <= x1; i++) occ[at(i, j)] = 1;
+  }
+  const blockCells = (x0, y0, x1, y1) => { for (let j = y0; j <= y1; j++) for (let i = x0; i <= x1; i++) take(i, j); };
+  const fits = (x0, y0, x1, y1) => { for (let j = y0; j <= y1; j++) for (let i = x0; i <= x1; i++) if (!open(i, j)) return false; return true; };
+
+  // Walk a trace from a cell, going straight and bending only at 45 degrees.
+  function route(x, y, d, straight, max, w, v0) {
+    const pts = [[x, y]]; let run = 0, n = 0;
+    take(x, y);
+    while (n < max) {
+      const l = (d + 7) % 8, r = (d + 1) % 8, flip = rand() < .5;
+      let opts = flip ? [d, l, r] : [d, r, l];
+      if (run >= straight && rand() < .14) opts = flip ? [l, d, r] : [r, d, l];
+      let moved = false;
+      for (const nd of opts) {
+        const [dx, dy] = D[nd], nx = x + dx, ny = y + dy;
+        if (!open(nx, ny)) continue;
+        if (dx && dy && occ[at(x + dx, y)] && occ[at(x, y + dy)]) continue;
+        if (nd !== d) { pts.push([x, y]); d = nd; run = 0; }
+        x = nx; y = ny; take(x, y); run++; n++; moved = true; break;
+      }
+      if (!moved) break;
+    }
+    if (n < 3) return null;
+    pts.push([x, y]);
+    const p = [];
+    for (const [i, j] of pts) { const q = [px(i), px(j)], a = p[p.length - 1]; if (!a || a[0] !== q[0] || a[1] !== q[1]) p.push(q); }
+    const seg = []; let L = 0;
+    for (let i = 1; i < p.length; i++) { const s = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]); seg.push(s); L += s; }
+    const t = { p, seg, L, w, v0, v1: true };
+    traces.push(t);
+    return t;
+  }
+
+  function pointAt(t, s) {
+    if (s <= 0) return t.p[0];
+    for (let i = 0; i < t.seg.length; i++) {
+      if (s <= t.seg[i]) { const a = t.p[i], b = t.p[i + 1], k = s / t.seg[i]; return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k]; }
+      s -= t.seg[i];
+    }
+    return t.p[t.p.length - 1];
+  }
+
+  function build() {
+    const r = board.getBoundingClientRect();
+    W = r.width; H = r.height; lw = W; lh = H;
+    if (!W || !H) return false;
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    C = { trace: tok('--trace'), gold: tok('--gold'), silk: tok('--silk'), pkg: tok('--pkg'), pkgInk: tok('--pkg-ink'), mask: tok('--mask'), paper: tok('--paper') };
+    cols = Math.floor(W / G); rows = Math.floor(H / G);
+    occ = new Uint8Array(cols * rows); traces = []; fan = []; pulses = [];
+    rand = seeded(cols * 131 + rows * 7 + 3050);
+
+    board.querySelectorAll('[data-keepout]').forEach(el => {
+      const e = el.getBoundingClientRect();
+      blockPx(e.left - r.left - 10, e.top - r.top - 8, e.width + 20, e.height + 16);
+    });
+    const holes = [[22, 22], [W - 22, 22], [22, H - 22], [W - 22, H - 22]];
+    holes.forEach(([x, y]) => blockPx(x - 18, y - 18, 36, 36));
+
+    const z = board.querySelector('.zone').getBoundingClientRect();
+    const zx0 = Math.floor((z.left - r.left) / G), zy0 = Math.floor((z.top - r.top) / G);
+    const zx1 = Math.floor((z.right - r.left) / G) - 1, zy1 = Math.floor((z.bottom - r.top) / G) - 1;
+    const parts = [];
+
+    // U1, a 7-pins-a-side package in the middle of the free zone
+    const N = 7, S = N + 2;
+    const ux = Math.round((zx0 + zx1 - S) / 2), uy = Math.max(zy0 + 1, Math.round((zy0 + zy1 - S) / 2) - 2);
+    let u1 = null;
+    if (fits(ux - 1, uy - 1, ux + S, uy + S)) {
+      u1 = { kind: 'ic', x: ux, y: uy, s: S, pins: [] };
+      blockCells(ux - 1, uy - 1, ux + S, uy + S);
+      for (let i = 0; i < N; i++) u1.pins.push([ux - 1, uy + 1 + i, 4], [ux + 1 + i, uy - 1, 6], [ux + S, uy + 1 + i, 0], [ux + 1 + i, uy + S, 2]);
+      parts.push(u1);
+    }
+    // J1, a programming header under U1
+    const jy = (u1 ? uy + S : zy0 + 4) + 5, jx = Math.round((zx0 + zx1) / 2) - 5;
+    if (fits(jx - 1, jy - 1, jx + 11, jy + 2)) {
+      const j1 = { kind: 'hdr', x: jx, y: jy, pins: [] };
+      blockCells(jx - 1, jy, jx + 11, jy + 2);
+      for (let i = 0; i < 6; i++) j1.pins.push([jx + i * 2, jy]);
+      parts.push(j1);
+    }
+    // a few passives scattered through the zone
+    let nc = 0, nr = 0;
+    for (let k = 0; k < 60 && parts.length < 10; k++) {
+      const vert = rand() < .35, w = vert ? 1 : 2, h = vert ? 2 : 1;
+      const x = zx0 + Math.floor(rand() * Math.max(1, zx1 - zx0 - 2)), y = zy0 + Math.floor(rand() * Math.max(1, zy1 - zy0 - 2));
+      if (!fits(x - 1, y - 1, x + w, y + h)) continue;
+      blockCells(x - 1, y - 1, x + w, y + h);
+      const cap = rand() < .55;
+      parts.push({ kind: 'pas', x, y, vert, cap, label: cap ? 'C' + (++nc) : 'R' + (++nr) });
+    }
+
+    if (u1) {
+      const pins = u1.pins.slice().sort(() => rand() - .5);
+      for (const [x, y, d] of pins) if (rand() < .86) { const t = route(x, y, d, 2 + Math.floor(rand() * 3), 24 + Math.floor(rand() * 60), 2.2); if (t) fan.push(t); }
+    }
+    parts.filter(p => p.kind === 'hdr').forEach(h => h.pins.forEach(([x, y]) => route(x, y, 6, 2, 40, 2.6)));
+
+    const starts = [];
+    for (let y = 3; y < rows - 3; y += 2) starts.push([1, y, 0], [cols - 2, y, 4]);
+    for (let x = 3; x < cols - 3; x += 2) starts.push([x, 1, 2], [x, rows - 2, 6]);
+    starts.sort(() => rand() - .5);
+    for (const [x, y, d] of starts) if (rand() < .55 && open(x, y)) route(x, y, d, 2 + Math.floor(rand() * 4), 16 + Math.floor(rand() * 44), rand() < .25 ? 3.6 : 2.2, true);
+    for (let k = 0; k < 120; k++) {
+      const x = 1 + Math.floor(rand() * (cols - 2)), y = 1 + Math.floor(rand() * (rows - 2));
+      if (open(x, y)) route(x, y, Math.floor(rand() * 8), 3, 10 + Math.floor(rand() * 30), 2.2, true);
+    }
+
+    // paint the static layer once
+    layer = document.createElement('canvas');
+    layer.width = cv.width; layer.height = cv.height;
+    const g = layer.getContext('2d');
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.lineCap = 'round'; g.lineJoin = 'round';
+    g.strokeStyle = C.trace;
+    for (const t of traces) { g.lineWidth = t.w; g.beginPath(); t.p.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.stroke(); }
+    const via = (x, y) => { g.fillStyle = C.trace; g.beginPath(); g.arc(x, y, 4, 0, 7); g.fill(); g.fillStyle = C.mask; g.beginPath(); g.arc(x, y, 1.7, 0, 7); g.fill(); };
+    for (const t of traces) { via(...t.p[t.p.length - 1]); if (t.v0) via(...t.p[0]); }
+    holes.forEach(([x, y]) => { g.fillStyle = C.gold; g.beginPath(); g.arc(x, y, 11, 0, 7); g.fill(); g.fillStyle = C.paper; g.beginPath(); g.arc(x, y, 6, 0, 7); g.fill(); });
+
+    const silkFont = s => `500 ${s}px "Martian Mono", ui-monospace, monospace`;
+    for (const p of parts) {
+      if (p.kind === 'ic') {
+        const x0 = p.x * G, y0 = p.y * G, s = p.s * G;
+        g.strokeStyle = C.silk; g.globalAlpha = .7; g.lineWidth = 1.2;
+        g.strokeRect(x0 - G + 2, y0 - G + 2, s + 2 * G - 4, s + 2 * G - 4);
+        g.globalAlpha = 1;
+        g.fillStyle = C.silk; g.beginPath(); g.arc(x0 - G - 4, y0 - G - 4, 2.4, 0, 7); g.fill();
+        g.fillStyle = C.gold;
+        for (const [x, y, d] of p.pins) { const h = d === 0 || d === 4; g.fillRect(px(x) - (h ? 5 : 2.5), px(y) - (h ? 2.5 : 5), h ? 10 : 5, h ? 5 : 10); }
+        g.fillStyle = C.pkg; g.beginPath(); g.roundRect ? g.roundRect(x0 + 1, y0 + 1, s - 2, s - 2, 4) : g.rect(x0 + 1, y0 + 1, s - 2, s - 2); g.fill();
+        g.fillStyle = C.pkgInk; g.globalAlpha = .45; g.beginPath(); g.arc(x0 + 12, y0 + 12, 3.5, 0, 7); g.fill(); g.globalAlpha = 1;
+        g.fillStyle = C.pkgInk; g.textAlign = 'center'; g.textBaseline = 'middle';
+        g.font = silkFont(10); g.fillText('ESP32-S3', x0 + s / 2, y0 + s / 2 - 7);
+        g.font = silkFont(8); g.fillText('LOGIC-01', x0 + s / 2, y0 + s / 2 + 9);
+        g.fillStyle = C.silk; g.textAlign = 'left'; g.font = silkFont(9); g.fillText('U1', x0 + s + G + 4, y0 - G + 6);
+      } else if (p.kind === 'hdr') {
+        g.strokeStyle = C.silk; g.globalAlpha = .7; g.lineWidth = 1.2;
+        g.strokeRect(px(p.x) - 10, px(p.y) - 10, 10 * G + 20, 20);
+        g.globalAlpha = 1;
+        p.pins.forEach(([x, y], i) => {
+          g.fillStyle = C.gold;
+          if (i === 0) g.fillRect(px(x) - 6, px(y) - 6, 12, 12); else { g.beginPath(); g.arc(px(x), px(y), 6, 0, 7); g.fill(); }
+          g.fillStyle = C.paper; g.beginPath(); g.arc(px(x), px(y), 2.6, 0, 7); g.fill();
+          g.fillStyle = C.silk; g.font = silkFont(7.5); g.textAlign = 'center'; g.textBaseline = 'top';
+          g.fillText(HDR[i], px(x), px(y) + 14);
+        });
+        g.textAlign = 'right'; g.textBaseline = 'middle'; g.font = silkFont(9);
+        g.fillText('J1', px(p.x) - 16, px(p.y));
+      } else {
+        const ax = px(p.x), ay = px(p.y), bx = p.vert ? ax : ax + G, by = p.vert ? ay + G : ay;
+        g.fillStyle = C.gold;
+        for (const [x, y] of [[ax, ay], [bx, by]]) g.fillRect(x - 3.5, y - 3.5, 7, 7);
+        g.fillStyle = p.cap ? '#b39a72' : '#1c1f1d';
+        if (p.vert) g.fillRect(ax - 3, ay + 1, 6, G - 2); else g.fillRect(ax + 1, ay - 3, G - 2, 6);
+        g.fillStyle = C.silk; g.globalAlpha = .85; g.font = silkFont(7.5); g.textAlign = 'left'; g.textBaseline = 'bottom';
+        g.fillText(p.label, ax - 6, ay - 6); g.globalAlpha = 1;
+      }
+    }
+    return true;
+  }
+
+  function paint() { if (!layer) return; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.drawImage(layer, 0, 0, W, H); }
+
+  function spawn(t, s = 0) {
+    if (!t || pulses.length > 34) return;
+    pulses.push({ t, s, v: 150 + Math.random() * 170, tail: 44 + Math.random() * 40 });
+  }
+  function pick() { for (let k = 0; k < 6; k++) { const t = traces[Math.floor(Math.random() * traces.length)]; if (t && t.L > 90) return t; } return null; }
+
+  function drawPulse(P) {
+    const steps = 10;
+    let prev = pointAt(P.t, Math.max(0, P.s - P.tail));
+    ctx.strokeStyle = C.gold; ctx.lineWidth = P.t.w + .6;
+    for (let k = 1; k <= steps; k++) {
+      const q = pointAt(P.t, Math.min(Math.max(P.s - P.tail + P.tail * k / steps, 0), P.t.L));
+      ctx.globalAlpha = (k / steps) ** 2 * .95;
+      ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
+      prev = q;
+    }
+    ctx.globalAlpha = 1;
+    if (P.s <= P.t.L) {
+      const h = pointAt(P.t, P.s);
+      ctx.shadowColor = C.gold; ctx.shadowBlur = 12; ctx.fillStyle = C.silk;
+      ctx.beginPath(); ctx.arc(h[0], h[1], 2.3, 0, 7); ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  function frame(now) {
+    raf = 0;
+    if (!onScreen || document.hidden || still.matches || !layer) return;
+    const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
+    spawnIn -= dt;
+    if (spawnIn <= 0) { spawnIn = .2 + Math.random() * .3; if (pulses.length < Math.min(14, 4 + traces.length / 10)) spawn(pick()); }
+    paint();
+    ctx.lineCap = 'round';
+    for (let i = pulses.length - 1; i >= 0; i--) {
+      const P = pulses[i]; P.s += P.v * dt;
+      if (P.s - P.tail > P.t.L) { pulses.splice(i, 1); continue; }
+      drawPulse(P);
+    }
+    raf = requestAnimationFrame(frame);
+  }
+  function kick() { if (!raf && onScreen && !document.hidden && !still.matches && layer) { last = 0; raf = requestAnimationFrame(frame); } }
+  function rebuild() { if (build()) { paint(); kick(); } }
+  function burst() { if (!still.matches) { fan.forEach(t => spawn(t, 0)); kick(); } }
+
+  board.addEventListener('pointermove', e => {
+    if (still.matches || !traces.length) return;
+    const now = performance.now(); if (now - lastPoint < 70) return; lastPoint = now;
+    const r = board.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+    let best = null, bd = 36 * 36, bs = 0;
+    for (const t of traces) {
+      let s0 = 0;
+      for (let i = 0; i < t.seg.length; i++) {
+        const a = t.p[i], b = t.p[i + 1], l = t.seg[i];
+        for (let u = 0; u <= l; u += 12) {
+          const k = l ? u / l : 0, qx = a[0] + (b[0] - a[0]) * k, qy = a[1] + (b[1] - a[1]) * k, dd = (qx - x) ** 2 + (qy - y) ** 2;
+          if (dd < bd) { bd = dd; best = t; bs = s0 + u; }
+        }
+        s0 += l;
+      }
+    }
+    if (best) { spawn(best, bs); kick(); }
+  }, { passive: true });
+  board.addEventListener('pointerdown', e => { if (!e.target.closest('a,button')) burst(); });
+
+  new IntersectionObserver(es => { onScreen = es[0].isIntersecting; kick(); }).observe(board);
+  document.addEventListener('visibilitychange', kick);
+  still.addEventListener('change', () => { pulses = []; paint(); kick(); });
+  let rt = 0;
+  new ResizeObserver(() => {
+    const r = board.getBoundingClientRect();
+    if (Math.abs(r.width - lw) < 2 && Math.abs(r.height - lh) < 2) return;
+    clearTimeout(rt); rt = setTimeout(rebuild, 120);
+  }).observe(board);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', rebuild);
+  new MutationObserver(rebuild).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  rebuild();
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { rebuild(); burst(); });
+})();
+
+/* Pinout: a pin lights up the projects that use that skill. */
+(() => {
+  const PIN = {
+    fusion: { n: 1, label: 'Fusion 360', desc: 'Three years of it. I designed every printed part of AURA in it: the glasses frame, the watch case and the robot.' },
+    print: { n: 2, label: '3D printing', desc: 'I print my own parts on a Bambu Lab A1 Mini, mostly in PETG and PLA+.' },
+    pcb: { n: 3, label: 'PCB design', desc: 'Layout in EasyEDA, fabrication by JLCPCB. AURA’s glasses run on a board I drew to fit the frame.' },
+    esp32: { n: 4, label: 'ESP32-S3', desc: 'My usual microcontroller. Firmware in C++ for the HAND glove and for AURA’s glasses and watch.' },
+    rpi: { n: 5, label: 'Raspberry Pi', desc: 'AURA’s desk robot runs on a Pi 4, and so did the Isla pump emulator.' },
+    lvgl: { n: 6, label: 'LVGL', desc: 'Emotion animations on the AURA smartwatch’s small screen.' },
+    ble: { n: 7, label: 'BLE / Wi-Fi', desc: 'Bluetooth ties AURA’s three devices to the phone. HAND gloves share one ward Wi-Fi network, and Logic Drop sends files over local Wi-Fi.' },
+    cpp: { n: 8, label: 'C++', desc: 'All of the ESP32 firmware for HAND and AURA.' },
+    python: { n: 9, label: 'Python', desc: 'MediaPipe vision on AURA’s robot, and the whole Isla station server in stdlib Python with SQLite.' },
+    flutter: { n: 10, label: 'Flutter', desc: 'The AURA phone app, and the pet marketplace app I ship for iOS and Android.' },
+    kotlin: { n: 11, label: 'Kotlin', desc: 'HAND’s ward monitoring app, and Logic Drop in Jetpack Compose.' },
+    aosp: { n: 12, label: 'Android ROMs', desc: 'Logic OS, my own LineageOS-based Android 16 build for the Redmi 13 5G.' },
+    node: { n: 13, label: 'Node.js', desc: 'The listening room’s server: WebSockets, clock sync and WebRTC signalling.' },
+    ai: { n: 14, label: 'AI & vision', desc: 'ChatGPT and MediaPipe built into AURA, plus AI training and evaluation work for Handshake AI and Outlier.' }
+  };
+  const work = document.getElementById('work');
+  const projects = [...work.querySelectorAll('.proj')];
+  const out = document.getElementById('pinOut');
+  const note = document.getElementById('workNote');
+  const idle = '<span class="k">Pin description</span>Pick a pin to light up the projects that use it.';
+  let cur = null;
+  out.innerHTML = idle;
+
+  function set(key) {
+    cur = key && key !== cur && PIN[key] ? key : null;
+    document.querySelectorAll('[data-pin]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pin === cur)));
+    document.querySelectorAll('.chip-n').forEach(n => n.classList.toggle('on', !!cur && +n.dataset.n === PIN[cur].n));
+    work.classList.toggle('is-filtering', !!cur);
+    const hits = projects.filter(p => { const on = !!cur && p.dataset.skills.split(' ').includes(cur); p.classList.toggle('is-lit', on); return on; });
+    if (!cur) { out.innerHTML = idle; note.hidden = true; return; }
+    const info = PIN[cur];
+    const links = hits.map(p => `<a href="#${p.id}">${p.dataset.name}</a>`).join(', ');
+    out.innerHTML = `<span class="k">Pin ${info.n} · ${info.label}</span>${info.desc} <span class="used">Used in ${links}.</span>`;
+    note.hidden = false;
+    note.innerHTML = `Lit: ${info.label} <button type="button" class="linkbtn" data-clear>Show all</button>`;
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-pin]');
+    if (b) set(b.dataset.pin);
+    else if (e.target.closest('[data-clear]')) set(null);
+  });
+})();
+
+/* Copy buttons and the local clock. */
+(() => {
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+    const label = b.querySelector('.copy-label');
+    const show = msg => {
+      if (!label) return;
+      if (!label.dataset.idle) label.dataset.idle = label.textContent;
+      label.textContent = msg;
+      clearTimeout(b._t); b._t = setTimeout(() => { label.textContent = label.dataset.idle; }, 1600);
+    };
+    const select = () => {
+      const el = document.getElementById(b.dataset.target);
+      if (el) { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+      show('Selected, press copy');
+    };
+    try { navigator.clipboard.writeText(b.dataset.copy).then(() => show('Copied'), select); } catch (_) { select(); }
+  }));
+  const clock = document.getElementById('clock');
+  const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false });
+  const tick = () => { clock.textContent = fmt.format(new Date()) + ' IST'; };
+  tick(); setInterval(tick, 30000);
+})();
+</script>
