@@ -593,7 +593,7 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
             </ul>
           </article>
 
-          <article class="proj sub" id="aura-robot" data-name="AURA robot" data-skills="rpi python ai ble">
+          <article class="proj sub" id="aura-robot" data-name="AURA robot" data-skills="fusion print rpi python ai ble">
             <div class="proj-head">
               <h3><span class="sub-pn">03</span>Desk robot</h3>
               <p class="proj-meta">Raspberry Pi 4 · camera</p>
@@ -602,7 +602,7 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
               <div>
                 <p class="proj-lede">A small robot for your desk that watches your face to tell how you feel, and shows AURA's mood on its screen.</p>
                 <ul class="points">
-                  <li>Runs on a Raspberry Pi 4 with a camera and a screen.</li>
+                  <li>Designed its body in Fusion 360 and printed it, built around a Raspberry Pi 4, a camera and a screen.</li>
                   <li>I wrote its vision in Python with MediaPipe. It reads your expression from the camera, so AURA knows when you're happy or sad.</li>
                   <li>That reading goes to the phone with everything else, so AURA answers how you look as well as what you say.</li>
                   <li>Its screen shows the same emotion as the glasses and the watch.</li>
@@ -625,9 +625,11 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
               <div><dt>Computer</dt><dd>Raspberry Pi 4</dd></div>
               <div><dt>Input</dt><dd>Camera</dd></div>
               <div><dt>Vision</dt><dd>Python, MediaPipe</dd></div>
-              <div><dt>My part</dt><dd>The emotion vision</dd></div>
+              <div><dt>My part</dt><dd>Body and emotion vision</dd></div>
             </dl>
             <ul class="stack">
+              <li><button class="tag" type="button" data-pin="fusion" aria-pressed="false">Fusion 360</button></li>
+              <li><button class="tag" type="button" data-pin="print" aria-pressed="false">3D printing</button></li>
               <li><button class="tag" type="button" data-pin="rpi" aria-pressed="false">Raspberry Pi</button></li>
               <li><button class="tag" type="button" data-pin="python" aria-pressed="false">Python</button></li>
               <li><button class="tag" type="button" data-pin="ai" aria-pressed="false">MediaPipe</button></li>
@@ -726,7 +728,7 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
           </ul>
         </article>
 
-        <article class="proj wide" id="homelab" data-name="Home lab" data-skills="kotlin ble">
+        <article class="proj wide" id="homelab" data-name="Home lab" data-skills="esp32 kotlin ble">
           <div class="proj-head">
             <h3>Home lab</h3>
             <p class="proj-meta">2026 · Personal</p>
@@ -741,7 +743,7 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
             </ul>
             <div class="incl" id="room">
               <p class="subs-k">Also built · Room automation</p>
-              <p class="incl-lede">An 8-channel relay module switches things in my room, my PC is controlled over the LAN, and a Kotlin app I wrote runs it all from my phone.</p>
+              <p class="incl-lede">An ESP32 drives an 8-channel relay module that switches things in my room. It sits on the home Wi-Fi, so it also turns my PC on and off over the LAN, and a Kotlin app I wrote runs it all from my phone.</p>
               <figure class="relays">
                 <div class="relay-board" role="group" aria-label="8-channel relay module">
                   <button class="relay" type="button" aria-pressed="true" aria-label="Relay 1"><span>K1</span><i></i></button>
@@ -753,7 +755,7 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
                   <button class="relay" type="button" aria-pressed="false" aria-label="Relay 7"><span>K7</span><i></i></button>
                   <button class="relay" type="button" aria-pressed="false" aria-label="Relay 8"><span>K8</span><i></i></button>
                 </div>
-                <figcaption>8-channel relay module · tap a relay</figcaption>
+                <figcaption>8-channel relay module on an ESP32 · tap a relay</figcaption>
               </figure>
             </div>
           </div>
@@ -761,6 +763,7 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
             <li><span class="tag">Debian</span></li>
             <li><span class="tag">Docker</span></li>
             <li><span class="tag">Nextcloud</span></li>
+            <li><button class="tag" type="button" data-pin="esp32" aria-pressed="false">ESP32</button></li>
             <li><button class="tag" type="button" data-pin="kotlin" aria-pressed="false">Kotlin</button></li>
             <li><span class="tag">Relays</span></li>
             <li><span class="tag">LAN</span></li>
@@ -1135,10 +1138,10 @@ a.node:hover{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
     fusion: { n: 1, label: 'Fusion 360', desc: 'Three years of it. I designed every printed part of AURA in it: the glasses frame, the watch case and the robot.' },
     print: { n: 2, label: '3D printing', desc: 'I print my own parts on a Bambu Lab A1 Mini, mostly in PETG and PLA+.' },
     pcb: { n: 3, label: 'PCB design', desc: 'Layout in EasyEDA, fabrication by JLCPCB. AURA’s glasses run on a board I drew to fit the frame.' },
-    esp32: { n: 4, label: 'ESP32-S3', desc: 'My usual microcontroller. Firmware in C++ for the HAND glove and for AURA’s glasses and watch.' },
+    esp32: { n: 4, label: 'ESP32-S3', desc: 'My usual microcontroller. Firmware in C++ for the HAND glove and for AURA’s glasses and watch, and an ESP32 runs the relays in my room.' },
     rpi: { n: 5, label: 'Raspberry Pi', desc: 'AURA’s desk robot runs on a Pi 4, and so did the Isla pump emulator.' },
     lvgl: { n: 6, label: 'LVGL', desc: 'Emotion animations on the AURA smartwatch’s small screen.' },
-    ble: { n: 7, label: 'BLE / Wi-Fi', desc: 'Bluetooth ties AURA’s three devices to the phone. HAND gloves share one ward Wi-Fi network, and Logic Drop sends files over local Wi-Fi. My room and PC are run over the home LAN.' },
+    ble: { n: 7, label: 'BLE / Wi-Fi', desc: 'Bluetooth ties AURA’s three devices to the phone. HAND gloves share one ward Wi-Fi network, and Logic Drop sends files over local Wi-Fi. The ESP32 in my room is on Wi-Fi and switches my PC on and off over the LAN.' },
     cpp: { n: 8, label: 'C++', desc: 'All of the ESP32 firmware for HAND and AURA.' },
     python: { n: 9, label: 'Python', desc: 'MediaPipe vision on AURA’s robot, and the whole Isla station server in stdlib Python with SQLite.' },
     flutter: { n: 10, label: 'Flutter', desc: 'The AURA phone app, and the pet marketplace app I ship for iOS and Android.' },
